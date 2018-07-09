@@ -2,6 +2,7 @@
 
 from os import walk
 import random
+import socket
 import time
 
 from discord import Game
@@ -9,6 +10,8 @@ from discord.ext.commands import Bot
 import requests
 
 import config
+
+socket.setdefaulttimeout(5)
 
 client = Bot(command_prefix=config.BOT_PREFIX)
 
@@ -19,6 +22,9 @@ client = Bot(command_prefix=config.BOT_PREFIX)
                 pass_context=True)
 async def itunes(context):
     await client.say('iTunes on Windows is like giving a cold glass of water to someone in hell, '+ context.message.author.mention)
+    await client.send_typing(context.message.channel)
+    time.sleep(5)
+    await client.say('https://www.youtube.com/watch?v=Vp18clQ1tjE')
 
 
 @client.command(name='bitcoin',
@@ -48,6 +54,19 @@ async def windows(context):
     await client.send_file(context.message.channel, f'./img/windows/{img}.jpg')
 
 
+@client.command(name='where',
+                description='Returns where the bot is currently being hosted/ran',
+                brief='Returns the bot\'s IP',
+                aliases='',
+                pass_context=True)
+async def where():
+    response = requests.get('https://www.icanhazip.com/')
+    ip = response.text
+    host = socket.getfqdn(ip)
+    await client.say(f'This bot is currently running at {ip}')
+    await client.say(f"Reverse lookup shows the hostname to be {host}")
+
+
 @client.command(name='whoami',
                 description='Testing purposes only.',
                 brief='Testing purposes only',
@@ -59,7 +78,7 @@ async def whoami(context):
 
 
 @client.command(name='quit',
-                description='Ends the process, immediately killing the bot.',
+                description='Ends the process, immediately killing the bot. You probably do not have access to do this.',
                 brief='Tells Steve to go away',
                 aliases='',
                 pass_context=True)
