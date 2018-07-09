@@ -1,2 +1,4 @@
 TOKEN = ''
 BOT_PREFIX = 'J-'
+
+BOT_OWNER = ''

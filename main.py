@@ -1,5 +1,6 @@
 # Steve Jobs discord bot
 
+from os import walk
 import random
 import time
 
@@ -15,7 +16,6 @@ client = Bot(command_prefix=config.BOT_PREFIX)
                 description='Describes iTunes on Windows',
                 brief='Describes iTunes',
                 aliases='',
-                category='Apple',
                 pass_context=True)
 async def itunes(context):
     await client.say('iTunes on Windows is like giving a cold glass of water to someone in hell, '+ context.message.author.mention)
@@ -38,17 +38,40 @@ async def bitcoin():
     await client.say('rofl fake money...')
 
 
+@client.command(name='windows',
+                description='Describes Microsoft Windows',
+                brief='Describes Microsoft Windows',
+                aliases='',
+                pass_context=True)
+async def windows(context):
+    img = random.randint(0, 16)
+    await client.send_file(context.message.channel, f'./img/windows/{img}.jpg')
+
+
+@client.command(name='whoami',
+                description='Testing purposes only.',
+                brief='Testing purposes only',
+                aliases='',
+                pass_context=True)
+async def whoami(context):
+    iam = context.message.author.id
+    await client.say(f'You have been detected as "{iam}"')
+
+
 @client.command(name='quit',
                 description='Ends the process, immediately killing the bot.',
                 brief='Tells Steve to go away',
                 aliases='',
-                category='Apple',
                 pass_context=True)
 async def quit(context):
-    await client.say('Disconnecting immediately, '+ context.message.author.mention)
-    time.sleep(1)
-    exit(0)
-    
+    sentby = context.message.author.id
+    if sentby == config.BOT_OWNER:
+        await client.say('Disconnecting immediately, '+ context.message.author.mention)
+        time.sleep(1)
+        exit(0)
+    else:
+        await client.say('Who are you and why should I care?')
+
 
 @client.event
 async def on_ready():
