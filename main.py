@@ -1,6 +1,6 @@
 # Steve Jobs discord bot
 
-from os import walk
+import os
 import random
 import socket
 import time
@@ -50,8 +50,11 @@ async def bitcoin():
                 aliases='',
                 pass_context=True)
 async def windows(context):
-    img = random.randint(0, 16)
-    await client.send_file(context.message.channel, f'./img/windows/{img}.jpg')
+    # Use os.listdir to list the files in the meme dir, and then send one of them at random to the channel
+    path = './img/windows/'
+    choices = os.listdir(path)
+    img = random.choice(choices)
+    await client.send_file(context.message.channel, f'{path}{img}')
 
 
 @client.command(name='where',
