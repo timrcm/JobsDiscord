@@ -103,4 +103,11 @@ async def on_ready():
     print('---------------')
     await client.change_presence(game=Game(name='Apple II'))
 
-client.run(config.TOKEN)
+
+if __name__ == '__main__':
+    if os.name == 'nt':
+        print("WARNING! This bot cannot be run on a Windows host!")
+        exit(1)
+    else:
+        print("Confirmed that this bot is NOT running on a Windows host. Connecting...")
+        client.run(config.TOKEN)
