@@ -65,11 +65,13 @@ async def windows(context):
                 pass_context=True)
 async def quote(context):
     # Use os.listdir to list the files in the meme dir, and then send one of them at random to the channel
-    quote = random.choice(open("./content/quotes.txt").read().splitlines())
+    f = open('./content/quotes.txt')
+    quote = random.choice(f.read().splitlines())
     await client.say(f"\"{quote}\"")
     await client.send_typing(context.message.channel)
     time.sleep(2)
     await client.say("-Steven Paul Jobs")
+    f.close()
 
 
 @client.command(name='where',
