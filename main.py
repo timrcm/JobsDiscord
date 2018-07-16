@@ -15,15 +15,15 @@ socket.setdefaulttimeout(5)
 
 client = Bot(command_prefix=config.BOT_PREFIX)
 
-@client.command(name='iTunes',
+@client.command(name='itunes',
                 description='Describes iTunes on Windows',
                 brief='Describes iTunes',
-                aliases='',
+                aliases='iTunes',
                 pass_context=True)
 async def itunes(context):
     await client.say('iTunes on Windows is like giving a cold glass of water to someone in hell, '+ context.message.author.mention)
     await client.send_typing(context.message.channel)
-    time.sleep(5)
+    time.sleep(2)
     await client.say('https://www.youtube.com/watch?v=Vp18clQ1tjE')
 
 
@@ -33,13 +33,14 @@ async def itunes(context):
                 aliases='',
                 category='Currency',
                 pass_context=True)
-async def bitcoin():
+async def bitcoin(context):
     response = requests.get('https://api.coindesk.com/v1/bpi/currentprice/BTC.json')
     value = response.json()['bpi']['USD']['rate']
     await client.say(f'The current Bitcoin price is: {value}')
     # diff =  
     await client.say(f'At a current market cap of $924 billion dollars, that makes a bitcoin worth 0.000000007327922% of Apple.')
     await client.say(f'Boy, that\'s a lot of 0s...')
+    await client.send_typing(context.message.channel)
     time.sleep(2)
     await client.say('rofl fake money...')
 
@@ -51,10 +52,24 @@ async def bitcoin():
                 pass_context=True)
 async def windows(context):
     # Use os.listdir to list the files in the meme dir, and then send one of them at random to the channel
-    path = './img/windows/'
+    path = './content/windows/'
     choices = os.listdir(path)
     img = random.choice(choices)
     await client.send_file(context.message.channel, f'{path}{img}')
+
+
+@client.command(name='quote',
+                description='Provides an inspirational quote from Steve Jobs himself',
+                brief='Provides an inspirational quote from Steve Jobs himself',
+                aliases='',
+                pass_context=True)
+async def quote(context):
+    # Use os.listdir to list the files in the meme dir, and then send one of them at random to the channel
+    quote = random.choice(open("./content/quotes.txt").read().splitlines())
+    await client.say(f"\"{quote}\"")
+    await client.send_typing(context.message.channel)
+    time.sleep(2)
+    await client.say("-Steven Paul Jobs")
 
 
 @client.command(name='where',
@@ -62,7 +77,7 @@ async def windows(context):
                 brief='Returns the bot\'s IP',
                 aliases='',
                 pass_context=True)
-async def where():
+async def where(context):
     response = requests.get('https://www.icanhazip.com/')
     ip = response.text
     host = socket.getfqdn(ip)
