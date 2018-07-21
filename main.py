@@ -10,6 +10,7 @@ from discord.ext.commands import Bot
 import requests
 
 import config
+import repeats
 
 socket.setdefaulttimeout(5)
 
@@ -54,8 +55,15 @@ async def windows(context):
     # Use os.listdir to list the files in the meme dir, and then send one of them at random to the channel
     path = './content/windows/'
     choices = os.listdir(path)
-    img = random.choice(choices)
+    a = ''
+
+    while a != 1:
+        img = random.choice(choices)
+        a = repeat_check(repeats.windows, img)
+
     await client.send_file(context.message.channel, f'{path}{img}')
+
+    repeat_block(repeats.windows, repeats.usable_windows, img)
 
 
 @client.command(name='quote',
@@ -64,14 +72,19 @@ async def windows(context):
                 aliases='',
                 pass_context=True)
 async def quote(context):
-    # Pick a random quote in the text file, and spam it out to the channel
-    with open('./content/quotes.txt', 'r') as f:
-        quote = random.choice(f.read().splitlines())
+    # Pick a random quote in the text file, and spam it out to the channel 
+        a = ''
+        while a != 1:
+            with open('./content/quotes.txt', 'r') as f:
+                quote = random.choice(f.read().splitlines())
+                a = repeat_check(repeats.quotes, quote)
+
         await client.say(f"\"{quote}\"")
         await client.send_typing(context.message.channel)
         time.sleep(2)
         await client.say("-Steven Paul Jobs")
-        f.close()
+
+        repeat_block(repeats.quotes, repeats.usable_quotes, quote)
 
 
 @client.command(name='where',
@@ -110,6 +123,25 @@ async def quit(context):
         exit(0)
     else:
         await client.say('Who are you and why should I care?')
+
+
+def repeat_block(c_type, c_type_max, selected):
+    '''Blocks repeats of content-driven commands for X many runs of that command'''
+
+    if len(c_type) >= c_type_max:
+        c_type.pop(0)
+
+    c_type.append(selected)
+
+def repeat_check(c_type, c_selected):
+    '''Checks for repeats of content-driven commands - see repeat_block for more info''' 
+
+    if c_selected in c_type:
+        answer = 0
+    else:
+        answer = 1
+
+    return answer
 
 
 @client.event
