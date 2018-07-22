@@ -16,6 +16,14 @@ socket.setdefaulttimeout(5)
 
 client = Bot(command_prefix=config.BOT_PREFIX)
 
+@client.command(name='android',
+                description='Describes Android',
+                brief='Describes Android',
+                aliases='',
+                pass_context=True)
+async def android(context):
+    await client.say('lol...')
+
 @client.command(name='itunes',
                 description='Describes iTunes on Windows',
                 brief='Describes iTunes',
@@ -116,8 +124,7 @@ async def whoami(context):
                 aliases='',
                 pass_context=True)
 async def quit(context):
-    sentby = context.message.author.id
-    if sentby == config.BOT_OWNER:
+    if context.message.author.id == config.BOT_OWNER:
         await client.say('Disconnecting immediately, '+ context.message.author.mention)
         time.sleep(1)
         exit(0)
@@ -154,9 +161,4 @@ async def on_ready():
 
 
 if __name__ == '__main__':
-    if os.name == 'nt':
-        print("WARNING! This bot cannot be run on a Windows host!")
-        exit(1)
-    else:
-        print("Confirmed that this bot is NOT running on a Windows host. Connecting...")
-        client.run(config.TOKEN)
+    client.run(config.TOKEN)
