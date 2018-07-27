@@ -22,7 +22,17 @@ client = Bot(command_prefix=config.BOT_PREFIX)
                 aliases='',
                 pass_context=True)
 async def android(context):
-    await client.say('lol...')
+    path = './content/reactions/'
+    choices = os.listdir(path)
+    r = ''
+
+    while r != 1:
+        img = random.choice(choices)
+        r = repeat_check(repeats.reactions, img)
+
+    await client.send_file(context.message.channel, f'{path}{img}')
+
+    repeat_block(repeats.reactions, repeats.usable_reactions, img)
 
 @client.command(name='itunes',
                 description='Describes iTunes on Windows',
@@ -63,15 +73,40 @@ async def windows(context):
     # Use os.listdir to list the files in the meme dir, and then send one of them at random to the channel
     path = './content/windows/'
     choices = os.listdir(path)
-    a = ''
+    w = ''
 
-    while a != 1:
+    while w != 1:
         img = random.choice(choices)
-        a = repeat_check(repeats.windows, img)
+        w = repeat_check(repeats.windows, img)
 
     await client.send_file(context.message.channel, f'{path}{img}')
-
     repeat_block(repeats.windows, repeats.usable_windows, img)
+
+    await client.send_typing(context.message.channel)
+    time.sleep(5)
+
+    path = './content/reactions/'
+    choices = os.listdir(path)
+    r = ''
+
+    while r != 1:
+        img = random.choice(choices)
+        r = repeat_check(repeats.reactions, img)
+
+    await client.send_file(context.message.channel, f'{path}{img}')
+    repeat_block(repeats.reactions, repeats.usable_reactions, img)
+
+    responses = [
+        'They call that an operating system',
+        'Who would want to USE that thing',
+        'What kind of a joke is that',
+        'How is that a professional grade operating system',
+        'I wouldn\'t want that on MY rig'
+    ]
+
+    jobs_reaction = random.choice(responses)
+
+    await client.say(jobs_reaction + ', ' + context.message.author.mention + '?!')
 
 
 @client.command(name='quote',
