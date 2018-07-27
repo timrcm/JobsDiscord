@@ -96,18 +96,15 @@ async def windows(context):
     await client.send_file(context.message.channel, f'{path}{img}')
     repeat_block(repeats.reactions, repeats.usable_reactions, img)
 
-    responses = [
-        'They call that an operating system',
-        'Who would want to USE that thing',
-        'What kind of a joke is that',
-        'How is that a professional grade operating system',
-        'I wouldn\'t want that on MY rig'
-    ]
 
-    jobs_reaction = random.choice(responses)
+    i = ''
+    while i != 1:
+        with open('./content/responses.txt', 'r') as f:
+            response = random.choice(f.read().splitlines())
+            i = repeat_check(repeats.responses, quote)
 
-    await client.say(jobs_reaction + ', ' + context.message.author.mention + '?!')
-
+    await client.say(response + ', ' + context.message.author.mention)
+    repeat_block(repeats.responses, repeats.usable_responses, response)
 
 @client.command(name='quote',
                 description='Provides an inspirational quote from Steve Jobs himself',
