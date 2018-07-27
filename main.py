@@ -101,7 +101,7 @@ async def windows(context):
     while i != 1:
         with open('./content/responses.txt', 'r') as f:
             response = random.choice(f.read().splitlines())
-            i = repeat_check(repeats.responses, quote)
+            i = repeat_check(repeats.responses, response)
 
     await client.say(response + ', ' + context.message.author.mention)
     repeat_block(repeats.responses, repeats.usable_responses, response)
