@@ -75,16 +75,20 @@ async def windows(context):
     choices = os.listdir(path)
     w = ''
 
+    # Use the repeat_check function to look for repeats endlessly until one is found 
     while w != 1:
         img = random.choice(choices)
         w = repeat_check(repeats.windows, img)
 
+    # Send the meme of choice, and then block it from being repeated by future uses of the command
     await client.send_file(context.message.channel, f'{path}{img}')
     repeat_block(repeats.windows, repeats.usable_windows, img)
 
+    # Fake typing 
     await client.send_typing(context.message.channel)
-    time.sleep(5)
+    time.sleep(2)
 
+    # Now, send a reaction to the meme, avoiding repeats again 
     path = './content/reactions/'
     choices = os.listdir(path)
     r = ''
@@ -97,6 +101,7 @@ async def windows(context):
     repeat_block(repeats.reactions, repeats.usable_reactions, img)
 
 
+    # Anndddd send a 'response' / quote, avoiding repeats here as well 
     i = ''
     while i != 1:
         with open('./content/responses.txt', 'r') as f:
