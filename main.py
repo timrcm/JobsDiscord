@@ -1,5 +1,6 @@
 # Steve Jobs discord bot
 
+import datetime
 import os
 import random
 import socket
@@ -13,8 +14,8 @@ import config
 import repeats
 
 socket.setdefaulttimeout(5)
+client = Bot(command_prefix=config.BOT_PREFIX, pm_help=True)
 
-client = Bot(command_prefix=config.BOT_PREFIX)
 
 @client.command(name='android',
                 description='Describes Android',
@@ -33,6 +34,17 @@ async def android(context):
     await client.send_file(context.message.channel, f'{path}{img}')
 
     repeat_block(repeats.reactions, repeats.usable_reactions, img)
+
+@client.command(name='appl',
+                description='Proivdes the current market valuation of Apple',
+                brief='Checks Apple\'s market value',
+                aliases='',
+                pass_context=True)
+async def appl(context):
+    # Uses pandas_datareader.data to spit out Apple's current stock value, number of shares, & market cap
+    # Maybe use Alpha Vantage instead? 
+    await client.say("This command is a work in progress. Suffice it to say, Apple is worth... a lot.")
+    pass
 
 @client.command(name='itunes',
                 description='Describes iTunes on Windows',
