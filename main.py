@@ -1,4 +1,5 @@
 # Steve Jobs discord bot
+# Python 3.6.6
 
 import datetime
 import os
@@ -122,6 +123,30 @@ async def windows(context):
 
     await client.say(response + ', ' + context.message.author.mention)
     repeat_block(repeats.responses, repeats.usable_responses, response)
+
+
+@client.command(name='meme',
+                description='Be graced with a meme from Mr. Jobs himself',
+                brief='Be graced with a meme from Mr. Jobs himself',
+                aliases='',
+                pass_context=True)
+async def meme(context):
+    # Use os.listdir to list the files in the meme dir, and then send one of them at random to the channel
+    path = './content/memes/'
+    choices = os.listdir(path)
+    w = ''
+
+    # Use the repeat_check function to look for repeats endlessly until one is found 
+    while w != 1:
+        img = random.choice(choices)
+        w = repeat_check(repeats.memes, img)
+
+    # Send the meme of choice, and then block it from being repeated by future uses of the command
+    await client.send_file(context.message.channel, f'{path}{img}')
+    repeat_block(repeats.memes, repeats.usable_memes, img)
+
+
+
 
 @client.command(name='quote',
                 description='Provides an inspirational quote from Steve Jobs himself',
