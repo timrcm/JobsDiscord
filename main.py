@@ -146,8 +146,6 @@ async def meme(context):
     repeat_block(repeats.memes, repeats.usable_memes, img)
 
 
-
-
 @client.command(name='quote',
                 description='Provides an inspirational quote from Steve Jobs himself',
                 brief='Provides an inspirational quote from Steve Jobs himself',
